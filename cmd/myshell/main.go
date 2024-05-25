@@ -7,15 +7,14 @@ import (
 )
 
 func main() {
-	// Uncomment this block to pass the first stage
-	fmt.Fprint(os.Stdout, "$ ")
+	repl()
+}
 
-	// Wait for user input
-	input, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-
-	// strip the return character and newline
-	input = input[:len(input)-1]
-
-	// Print the input
-	fmt.Fprintf(os.Stdout, "%s: command not found\n", input)
+func repl() {
+	for {
+		fmt.Fprint(os.Stdout, "$ ")
+		input, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+		input = input[:len(input)-1]
+		fmt.Fprintf(os.Stdout, "%s: command not found\n", input)
+	}
 }
