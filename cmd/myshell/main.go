@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -53,10 +54,31 @@ func execute(cmd command) {
 }
 
 func handleType(cmd command) {
-	switch cmd.args[0] {
-	case "exit", "echo", "type":
+	if slices.Contains([]string{"exit", "echo", "type"}, cmd.args[0]) {
 		fmt.Fprintf(os.Stdout, "%s is a shell builtin\n", cmd.args[0])
-	default:
-		fmt.Fprintf(os.Stdout, "%s not found\n", cmd.args[0])
+		return
 	}
+
+	if fp, ok := inPath(cmd.args[0]); ok {
+		fmt.Fprintf(os.Stdout, "%s\n", fp)
+		return
+	}
+
+	fmt.Fprintf(os.Stdout, "%s not found\n", cmd.args[0])
+}
+
+func inPath(t string) (string, bool) {
+	path := os.Getenv("PATH")
+
+	dirs := strings.Split(path, ":")
+	for _, dir := range dirs {
+		files, _ := os.ReadDir(dir)
+		for _, file := range files {
+			if file.Name() == t {
+				return fmt.Sprintf("%s/%s", dir, file.Name()), true
+			}
+		}
+	}
+
+	return "", false
 }
