@@ -42,6 +42,9 @@ func execute(cmd command) {
 		// get the exit code from the first argument
 		code, _ := strconv.Atoi(cmd.args[0])
 		os.Exit(code)
+	case "echo":
+		args := strings.Join(cmd.args, " ")
+		fmt.Println(args)
 	default:
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", cmd.name)
 	}
