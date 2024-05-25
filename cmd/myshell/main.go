@@ -45,7 +45,18 @@ func execute(cmd command) {
 	case "echo":
 		args := strings.Join(cmd.args, " ")
 		fmt.Println(args)
+	case "type":
+		handleType(cmd)
 	default:
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", cmd.name)
+	}
+}
+
+func handleType(cmd command) {
+	switch cmd.args[0] {
+	case "exit", "echo", "type":
+		fmt.Fprintf(os.Stdout, "%s is a shell builtin\n", cmd.args[0])
+	default:
+		fmt.Fprintf(os.Stdout, "%s not found\n", cmd.args[0])
 	}
 }
