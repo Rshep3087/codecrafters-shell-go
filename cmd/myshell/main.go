@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"slices"
 	"strconv"
 	"strings"
@@ -40,16 +41,24 @@ func parse(input string) command {
 func execute(cmd command) {
 	switch cmd.name {
 	case "exit":
-		// get the exit code from the first argument
 		code, _ := strconv.Atoi(cmd.args[0])
 		os.Exit(code)
 	case "echo":
 		args := strings.Join(cmd.args, " ")
 		fmt.Println(args)
+		return
 	case "type":
 		handleType(cmd)
-	default:
+		return
+	}
+
+	excmd := exec.Command(cmd.name, cmd.args...)
+	excmd.Stdout = os.Stdout
+	excmd.Stderr = os.Stderr
+	err := excmd.Run()
+	if err != nil {
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", cmd.name)
+		return
 	}
 }
 
