@@ -73,7 +73,7 @@ func handleType(cmd command) {
 		return
 	}
 
-	fmt.Fprintf(os.Stdout, "%s not found\n", cmd.args[0])
+	fmt.Fprintf(os.Stdout, "%s: not found\n", cmd.args[0])
 }
 
 func inPath(t string) (string, bool) {
