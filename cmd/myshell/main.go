@@ -76,7 +76,6 @@ func execute(cmd command) {
 func handleCD(cmd command) {
 	dir := cmd.args[0]
 
-	// _, err := os.Stat(cmd.args[0])
 	err := os.Chdir(dir)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
