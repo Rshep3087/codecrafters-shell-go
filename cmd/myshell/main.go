@@ -41,6 +41,9 @@ func parse(input string) command {
 func execute(cmd command) {
 	switch cmd.name {
 	case "exit":
+		if len(cmd.args) == 0 {
+			os.Exit(0)
+		}
 		code, _ := strconv.Atoi(cmd.args[0])
 		os.Exit(code)
 	case "echo":
@@ -49,6 +52,10 @@ func execute(cmd command) {
 		return
 	case "type":
 		handleType(cmd)
+		return
+	case "pwd":
+		dir, _ := os.Getwd()
+		fmt.Println(dir)
 		return
 	}
 
