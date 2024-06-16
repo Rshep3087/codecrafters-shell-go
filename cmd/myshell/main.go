@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -57,6 +58,9 @@ func execute(cmd command) {
 		dir, _ := os.Getwd()
 		fmt.Println(dir)
 		return
+	case "cd":
+		handleCD(cmd)
+		return
 	}
 
 	excmd := exec.Command(cmd.name, cmd.args...)
@@ -66,6 +70,19 @@ func execute(cmd command) {
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "%s: command not found\n", cmd.name)
 		return
+	}
+}
+
+func handleCD(cmd command) {
+	dir := cmd.args[0]
+
+	// _, err := os.Stat(cmd.args[0])
+	err := os.Chdir(dir)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			fmt.Printf("%s: No such file or directory\n", dir)
+			return
+		}
 	}
 }
 
