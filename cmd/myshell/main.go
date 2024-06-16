@@ -76,6 +76,11 @@ func execute(cmd command) {
 func handleCD(cmd command) {
 	dir := cmd.args[0]
 
+	if dir == "~" {
+		os.Chdir(os.Getenv("HOME"))
+		return
+	}
+
 	err := os.Chdir(dir)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
