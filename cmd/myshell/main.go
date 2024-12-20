@@ -50,6 +50,8 @@ func parse(input string) command {
 			}
 		case '\'':
 			inQuotes = !inQuotes
+		case '\n':
+			continue
 		default:
 			currentArg.WriteRune(char)
 		}
@@ -78,7 +80,7 @@ func execute(cmd command) {
 		os.Exit(code)
 	case "echo":
 		args := strings.Join(cmd.args, " ")
-		fmt.Print(args)
+		fmt.Println(args)
 		return
 	case "type":
 		handleType(cmd)
@@ -120,7 +122,7 @@ func handleCD(cmd command) {
 }
 
 func handleType(cmd command) {
-	if slices.Contains([]string{"exit", "echo", "type"}, cmd.args[0]) {
+	if slices.Contains([]string{"exit", "echo", "type", "pwd"}, cmd.args[0]) {
 		fmt.Fprintf(os.Stdout, "%s is a shell builtin\n", cmd.args[0])
 		return
 	}
