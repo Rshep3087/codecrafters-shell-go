@@ -34,19 +34,34 @@ type command struct {
 
 // parse takes a string and returns a command
 func parse(input string) command {
-	commandThenArgs := strings.SplitN(input, " ", 2)
-	commandName := commandThenArgs[0]
+	var args []string
+	var commandName string
+	var currentArg strings.Builder
+	inQuotes := false
 
-	if len(commandThenArgs) == 1 {
-		return command{name: commandName, args: []string{}}
+	for _, char := range input {
+		switch char {
+		case ' ':
+			if inQuotes {
+				currentArg.WriteRune(char)
+			} else if currentArg.Len() > 0 {
+				args = append(args, currentArg.String())
+				currentArg.Reset()
+			}
+		case '\'':
+			inQuotes = !inQuotes
+		default:
+			currentArg.WriteRune(char)
+		}
 	}
 
-	var args []string
-	if strings.Contains(commandThenArgs[1], "'") {
-		quoteSplit := strings.SplitN(commandThenArgs[1], "'", 3)
-		args = append(args, quoteSplit[1])
-	} else {
-		args = strings.Fields(commandThenArgs[1])
+	if currentArg.Len() > 0 {
+		args = append(args, currentArg.String())
+	}
+
+	if len(args) > 0 {
+		commandName = args[0]
+		args = args[1:]
 	}
 
 	return command{name: commandName, args: args}

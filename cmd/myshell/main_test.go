@@ -15,6 +15,7 @@ func TestParse(t *testing.T) {
 		{"echo 'hello world'", command{name: "echo", args: []string{"hello world"}}},
 		{"echo 'hello     script'", command{name: "echo", args: []string{"hello     script"}}},
 		{"echo script     world", command{name: "echo", args: []string{"script", "world"}}},
+		{"cat '/tmp/file name' '/tmp/file name with spaces'", command{name: "cat", args: []string{"/tmp/file name", "/tmp/file name with spaces"}}},
 	}
 
 	for _, test := range tests {
