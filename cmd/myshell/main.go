@@ -46,7 +46,7 @@ func parse(input string) command {
 		quoteSplit := strings.SplitN(commandThenArgs[1], "'", 3)
 		args = append(args, quoteSplit[1])
 	} else {
-		args = strings.Split(commandThenArgs[1], " ")
+		args = strings.Fields(commandThenArgs[1])
 	}
 
 	return command{name: commandName, args: args}

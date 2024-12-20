@@ -14,6 +14,7 @@ func TestParse(t *testing.T) {
 		{"exit", command{name: "exit", args: []string{}}},
 		{"echo 'hello world'", command{name: "echo", args: []string{"hello world"}}},
 		{"echo 'hello     script'", command{name: "echo", args: []string{"hello     script"}}},
+		{"echo script     world", command{name: "echo", args: []string{"script", "world"}}},
 	}
 
 	for _, test := range tests {
