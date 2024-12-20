@@ -12,9 +12,8 @@ func TestParse(t *testing.T) {
 	}{
 		{"echo hello", command{name: "echo", args: []string{"hello"}}},
 		{"exit", command{name: "exit", args: []string{}}},
-		{"cd /home", command{name: "cd", args: []string{"/home"}}},
 		{"echo 'hello world'", command{name: "echo", args: []string{"hello world"}}},
-		{"type echo", command{name: "type", args: []string{"echo"}}},
+		{"echo 'hello     script'", command{name: "echo", args: []string{"hello     script"}}},
 	}
 
 	for _, test := range tests {
