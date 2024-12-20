@@ -78,7 +78,7 @@ func execute(cmd command) {
 		os.Exit(code)
 	case "echo":
 		args := strings.Join(cmd.args, " ")
-		fmt.Println(args)
+		fmt.Print(args)
 		return
 	case "type":
 		handleType(cmd)
